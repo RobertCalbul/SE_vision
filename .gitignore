@@ -61,3 +61,8 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+/SE_vision/nbproject/private/
+/SE_vision/build/
+/SE_vision/dist/
+/servicio_prolog/nbproject/private/
+/servicio_prolog/build/
