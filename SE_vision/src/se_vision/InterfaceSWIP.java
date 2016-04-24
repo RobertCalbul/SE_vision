@@ -30,13 +30,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-
 /**
  *
  * @author Nexus
  */
 public class InterfaceSWIP extends JPanel {
-
     /**
      * @param args the command line arguments
      */
@@ -131,7 +129,6 @@ public class InterfaceSWIP extends JPanel {
                 return button.getText();
             }
         }
-
         return null;
     }
 
@@ -142,7 +139,6 @@ public class InterfaceSWIP extends JPanel {
 
     public static void creaSlide() {
         //Obtenemos preguntas
-
         JFrame f = new JFrame();
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -150,30 +146,31 @@ public class InterfaceSWIP extends JPanel {
             InterfaceSWIP p = new InterfaceSWIP(preguntasArray1);
             panelPreg.add(p, p.toString());
         }
+        
         JPanel controles = new JPanel();
         controles.add(new JButton(new AbstractAction("Anterior") {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 CardLayout cl = (CardLayout) panelPreg.getLayout();
                 System.out.println(index);
                 index -= 1;
+                
                 cl.previous(panelPreg);
             }
         }));
+        
         controles.add(new JButton(new AbstractAction("Siguiente") {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 CardLayout cl = (CardLayout) panelPreg.getLayout();
                 System.out.println(getSelectedButtonText(bgrupo));
                 System.out.println(index +">>"+keys[index]);
-
                 index += 1;
-
+                
                 cl.next(panelPreg);
             }
         }));
+        
         f.add(panelPreg, BorderLayout.CENTER);
         f.add(controles, BorderLayout.SOUTH);
         f.setTitle("Sistema Experto Vision - Patricio Aros, Robert Calbul, Enrique Ketterer");
@@ -182,20 +179,8 @@ public class InterfaceSWIP extends JPanel {
         f.setVisible(true);
     }
 
-    public static Object getKeyFromValue(Map hm, Object value) {
-        for (Object o : hm.keySet()) {
-            System.err.println(o.toString() + " >>" + value);
-            if (hm.get(o).equals(value)) {
-                return o;
-            }
-        }
-        return null;
-    }
-
     public static void main(String[] args) {
-
         EventQueue.invokeLater(new Runnable() {
-
             @Override
             public void run() {
                 creaSlide();
