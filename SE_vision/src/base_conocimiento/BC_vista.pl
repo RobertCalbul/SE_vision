@@ -1,44 +1,44 @@
 %A
 %B
 %C
-es_sintoma(cansansio_trabajo). %cansancio ojos en el trabajo
+es_sintoma(cansansio_trabajo). %listo cansancio ojos en el trabajo
 %D
-es_sintoma(dolor_cabeza).
-es_sintoma(dolor_ocular).
-es_sintoma(d_letra_chica). %dificultad para ver letra chica
-es_sintoma(d_objeto_cerca).%dificultad ver objetos cercanos
-es_sintoma(d_objeto_lejo). %dificultad ver objetos lejanos
-es_sintoma(d_conducir_noche). %dificultad para conducir de noche
+es_sintoma(dolor_cabeza).%listo
+es_sintoma(dolor_ocular).%listo
+es_sintoma(d_letra_chica). %listo dificultad para ver letra chica
+es_sintoma(d_objeto_cerca).%listo dificultad ver objetos cercanos
+es_sintoma(d_objeto_lejo). %listo dificultad ver objetos lejanos
+es_sintoma(d_conducir_noche). %listo dificultad para conducir de noche
 %E
-es_sintoma(entrecerrar_ojos).
+es_sintoma(entrecerrar_ojos).%listo
 %F
-es_sintoma(fatiga_visual).
+es_sintoma(fatiga_visual).%listo
 %G
 %H
 %I
-es_sintoma(irritacion).% despues de forzar vista
+es_sintoma(irritacion).%listo  despues de forzar vista
 %L
-es_sintoma(luz_deslumbrante).
+es_sintoma(luz_deslumbrante).%listo
 %M
-es_sintoma(mayor_distancia). %ajelar objetos
+es_sintoma(mayor_distancia).%listo ajelar objetos
 %N
 %O
-es_sintoma(ojos_bizcos).
-es_sintoma(ojos_enrojecidos).
-es_sintoma(ojos_hinchados).
-es_sintoma(ojos_cansados).
+es_sintoma(ojos_bizcos).%listo
+es_sintoma(ojos_enrojecidos).%listo
+es_sintoma(ojos_hinchados).%listo
+es_sintoma(ojos_cansados).%listo
 %P
 %Q
 %R
 %S
 %T
-es_sintoma(tension_ojos). %aumento tension ocular
+es_sintoma(tension_ojos).%listo aumento tension ocular
 %U
 %V
-es_sintoma(vision_doble).
-es_sintoma(vision_nublada).
-es_sintoma(vision_borrosa).
-es_sintoma(vision_distorcionada).
+es_sintoma(vision_doble).%listo
+es_sintoma(vision_nublada).%listo
+es_sintoma(vision_borrosa).%listo
+es_sintoma(vision_distorcionada).%listo
 %W
 %X
 %Y
