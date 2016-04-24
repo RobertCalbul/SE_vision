@@ -52,6 +52,7 @@ public class InterfaceSWIP extends JPanel {
     static ButtonGroup bgrupo = new ButtonGroup();
     
     public InterfaceSWIP(String name){
+        
         this.name=name;
         this.setPreferredSize(new Dimension(320, 240));
         //this.setBackground(new Color(random.nextInt()));
