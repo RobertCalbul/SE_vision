@@ -25,7 +25,7 @@ public class SE_vision {
         
         
         String lista = "";
-        String query = "consult('BC_vista.pl')";
+        String query = "consult('src/base_conocimiento/BC_vista.pl')";
         Query ql = new Query(query);
         System.out.print(query +" "+ (ql.hasSolution()?"Exito":"fallo"));
         
