@@ -16,11 +16,10 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
@@ -28,16 +27,23 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+
 /**
  *
  * @author Nexus
  */
 public class InterfaceSWIP extends JPanel {
+
     /**
      * @param args the command line arguments
      */
+    static List<String> agregados = new ArrayList<>();
+    static String Problem[] = {"miopia", "hipermetropia", "astigmatismo", "presbicia"};
+    static int contador[] = {0, 0, 0, 0};
+
     static String[] keys = {
         "cansansio_trabajo",
         "dolor_cabeza",
@@ -146,31 +152,49 @@ public class InterfaceSWIP extends JPanel {
             InterfaceSWIP p = new InterfaceSWIP(preguntasArray1);
             panelPreg.add(p, p.toString());
         }
-        
+
         JPanel controles = new JPanel();
         controles.add(new JButton(new AbstractAction("Anterior") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 CardLayout cl = (CardLayout) panelPreg.getLayout();
                 System.out.println(index);
-                index -= 1;
-                
-                cl.previous(panelPreg);
+                if (index > 0) {
+                    index -= 1;
+                    cl.previous(panelPreg);
+                }
             }
         }));
-        
+
         controles.add(new JButton(new AbstractAction("Siguiente") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 CardLayout cl = (CardLayout) panelPreg.getLayout();
                 System.out.println(getSelectedButtonText(bgrupo));
-                System.out.println(index +">>"+keys[index]);
-                index += 1;
-                
-                cl.next(panelPreg);
+                System.out.println(index + ">>" + keys[index]);
+                if (index < preguntasArray.length - 1) {
+                    if (getSelectedButtonText(bgrupo).equals("SI")) {
+                        Consultas c = new Consultas();
+
+                        String query = String.format("problema_de(%s, Y)", keys[index]);
+                        c.Query(query).stream().forEach((x) -> {
+                            agregados.add(x);
+                            // System.out.println(x);
+                        });
+                        System.err.println(query + ">>" + index + ">>" + preguntasArray.length);
+
+                    }
+                    index += 1;
+                    cl.next(panelPreg);
+                } else {
+                    comparar(agregados);
+                    String resp = "Su problema puede ser " + Problem[buscarMayor(contador)];
+                    System.out.println(resp);
+                    JOptionPane.showMessageDialog(null, resp, "Respuesta", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
         }));
-        
+
         f.add(panelPreg, BorderLayout.CENTER);
         f.add(controles, BorderLayout.SOUTH);
         f.setTitle("Sistema Experto Vision - Patricio Aros, Robert Calbul, Enrique Ketterer");
@@ -180,11 +204,51 @@ public class InterfaceSWIP extends JPanel {
     }
 
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                creaSlide();
-            }
+        EventQueue.invokeLater(() -> {
+            creaSlide();
         });
+    }
+
+    public static int buscarMayor(int[] l) {
+        /**
+         * *
+         * Verifica cual es la enfermedad que mas se repitio y retorna el index
+         * de la enfermedad probable
+         */
+        int mayor = 0;
+        int index_c = 0;
+        for (int i = 0; i < l.length; i++) {
+            if (l[i] >= mayor) {
+                mayor = l[i];
+                index_c = i;
+            }
+            //System.out.println(contador[i]);
+        }
+        return index_c;
+    }
+
+    public static void comparar(List<String> l) {
+        /**
+         * *
+         * Cuenta la cantidad de veces que se repitio una enfermedad
+         */
+        Set<String> lista = new HashSet<>(l);
+        for (String key : lista) {
+            System.out.println(key + " " + Collections.frequency(l, key));
+            switch (key) {
+                case "miopia":
+                    contador[0] = Collections.frequency(l, key);
+                    break;
+                case "hipermetropia":
+                    contador[1] = Collections.frequency(l, key);
+                    break;
+                case "astigmatismo":
+                    contador[2] = Collections.frequency(l, key);
+                    break;
+                case "presbicia":
+                    contador[3] = Collections.frequency(l, key);
+                    break;
+            }
+        }
     }
 }

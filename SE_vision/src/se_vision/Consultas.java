@@ -6,9 +6,13 @@
 package se_vision;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.jpl7.Query;
+import static se_vision.SE_vision.contador;
 
 /**
  *
@@ -34,7 +38,7 @@ public final class Consultas {
 
         while (q.hasMoreSolutions()) {
             HashMap ht = (HashMap) q.nextSolution();
-            lista.add((ht.get("X")!=null?ht.get("X")+",":"")+(ht.get("Y")!=null?ht.get("Y")+"":""));
+            lista.add((ht.get("X") != null ? ht.get("X") + "," : "") + (ht.get("Y") != null ? ht.get("Y") + "" : ""));
         }
         return lista;
     }
@@ -50,7 +54,6 @@ public final class Consultas {
         }
         return lista;
     }*/
-
     public Boolean init() {
         Boolean bandera = false;
         try {

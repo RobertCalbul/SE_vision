@@ -24,13 +24,13 @@ public class SE_vision {
     static String Problem[] = {"miopia", "hipermetropia", "astigmatismo", "presbicia"};
     static int contador[] = {0, 0, 0, 0};
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
 
         
         agrega_sintomas();
-        comparar();
-        System.out.println("Su problema puede ser " + Problem[buscarMayor()]);
-    }
+        comparar(agregados);
+        System.out.println("Su problema puede ser " + Problem[buscarMayor(contador)]);
+    }*/
     
     public static void agrega_sintomas(){
     //int contador[] = {0, 0, 0, 0};
@@ -66,16 +66,16 @@ public class SE_vision {
         });
     }
 
-    public static int buscarMayor() {
+    public static int buscarMayor(int[] l) {
         /***
          * Verifica cual es la enfermedad que mas se repitio
          * y retorna el index de la enfermedad probable
          */
         int mayor = 0;
         int index = 0;
-        for (int i = 0; i < contador.length; i++) {
-            if (contador[i] >= mayor) {
-                mayor = contador[i];
+        for (int i = 0; i < l.length; i++) {
+            if (l[i] >= mayor) {
+                mayor = l[i];
                 index = i;
             }
             //System.out.println(contador[i]);
@@ -83,25 +83,25 @@ public class SE_vision {
         return index;
     }
 
-    public static void comparar() {
+    public static void comparar(List<String>l) {
         /***
          * Cuenta la cantidad de veces que se repitio una enfermedad
          */
-        Set<String> lista = new HashSet<>(agregados);
+        Set<String> lista = new HashSet<>(l);
         for (String key : lista) {
-            System.out.println(key + " " + Collections.frequency(agregados, key));
+            System.out.println(key + " " + Collections.frequency(l, key));
             switch (key) {
                 case "miopia":
-                    contador[0] = Collections.frequency(agregados, key);
+                    contador[0] = Collections.frequency(l, key);
                     break;
                 case "hipermetropia":
-                    contador[1] = Collections.frequency(agregados, key);
+                    contador[1] = Collections.frequency(l, key);
                     break;
                 case "astigmatismo":
-                    contador[2] = Collections.frequency(agregados, key);
+                    contador[2] = Collections.frequency(l, key);
                     break;
                 case "presbicia":
-                    contador[3] = Collections.frequency(agregados, key);
+                    contador[3] = Collections.frequency(l, key);
                     break;
             }
         }
