@@ -40,63 +40,20 @@ public class InterfaceSWIP extends JPanel {
     /**
      * @param args the command line arguments
      */
-    static List<String> agregados = new ArrayList<>();
-    static String Problem[] = {"miopia", "hipermetropia", "astigmatismo", "presbicia"};
-    static int contador[] = {0, 0, 0, 0};
-
-    static String[] keys = {
-        "cansansio_trabajo",
-        "dolor_cabeza",
-        "dolor_ocular",
-        "d_letra_chica",
-        "d_objeto_cerca",
-        "d_objeto_lejo",
-        "d_conducir_noche",
-        "entrecerrar_ojos",
-        "fatiga_visual",
-        "irritacion",
-        "luz_deslumbrante",
-        "mayor_distancia",
-        "ojos_bizcos",
-        "ojos_enrojecidos",
-        "ojos_hinchados",
-        "ojos_cansados",
-        "tension_ojos",
-        "vision_doble",
-        "vision_nublada",
-        "vision_borrosa",
-        "vision_distorcionada",};
-
-    static String[] preguntasArray = {
-        "¿Siente cansansio ocular?",
-        "¿Siente dolor de cabeza al leer?",
-        "¿Siente dolor ocular?",
-        "¿Le dificulta ver las letras chicas?",
-        "¿Le dificulta ver objetos cercanos?",
-        "¿Le dificulta ver objetos lejanos?",
-        "¿Le dificulta conducir de noche?",
-        "¿Entrecierra los ojos al leer?",
-        "¿Tiene fatíga visual?",
-        "¿Presenta irritación ocular?",
-        "¿La luz la considera deslumbrante?",
-        "¿Tiene que alejar los objetos para verlo?",
-        "¿Tiene ojos bizcos?",
-        "¿Tiene los ojos enrojecidos?",
-        "¿Tiene los ojos hinchados?",
-        "¿Tiene ojos cansados?",
-        "¿Presenta tensión en los ojos?",
-        "¿Presenta visión doble?",
-        "¿Presenta visión nublada?",
-        "¿Presenta visión borrosa?",
-        "¿Presenta visión distorcionada?"};
-    //private static final Random random = new Random();
-    private static final JPanel panelPreg = new JPanel(new CardLayout());
     private final String name;
-    static int index = 0;
-    GridLayout grid = new GridLayout(3, 1);
-    static ButtonGroup bgrupo = new ButtonGroup();
+    private static int index = 0;
+    private static final Consultas c = new Consultas();
+    private static final Preguntas p = new Preguntas();
+    private static final List<String> agregados = new ArrayList<>();
+    private static final String Problem[] = {"miopia", "hipermetropia", "astigmatismo", "presbicia"};
+    private static final int contador[] = {0, 0, 0, 0};
+    private static final String[] keys = p.keys();
+    private static final String[] preguntasArray = p.preguntas();
+    private static final JPanel panelPreg = new JPanel(new CardLayout());
+    private final GridLayout grid = new GridLayout(3, 1);
+    private static final ButtonGroup bgrupo = new ButtonGroup();
 
-    public InterfaceSWIP(String name) {
+    public InterfaceSWIP(String name, Boolean flag) {
         this.name = name;                               //Setea pregunta a una variable
 
         this.setLayout(grid);                           //Setea una grilla al panel principal       
@@ -104,33 +61,31 @@ public class InterfaceSWIP extends JPanel {
         //this.setBackground(new Color(new Random().nextInt()));
         JLabel pregunta = new JLabel(name);             //Agrega pregunta a un label
         pregunta.setHorizontalAlignment(JLabel.CENTER); //Se centra la label
-
-        //RadioButtons
-        JRadioButton s = new JRadioButton("SI");
-        s.setName(name);
-        JRadioButton n = new JRadioButton("NO");
-        n.setName(name);
-
-        //Agrupacion de Botones radio Buttons
-        bgrupo.add(s);
-        bgrupo.add(n);
-
-        //Crea panela contencion ButtonGroup
-        JPanel opt = new JPanel(new GridLayout(1, 1));  //Se crea una grilla
-        opt.setLayout(new FlowLayout());                //Se sentre contenido
-        opt.add(s);                                     //Se agrega el primer RadioButton
-        opt.add(n);                                     //Se agrega el segundo RadioButton
-
         this.add(pregunta);                             //Se agrega label a panel principal
-        this.add(opt);                                  //Se agregan el panel al panel principal
+        if (flag) {
+            //RadioButtons
+            JRadioButton s = new JRadioButton("SI");
+            s.setName(name);
+            JRadioButton n = new JRadioButton("NO");
+            n.setName(name);
 
+            //Agrupacion de Botones radio Buttons
+            bgrupo.add(s);
+            bgrupo.add(n);
+
+            //Crea panela contencion ButtonGroup
+            JPanel opt = new JPanel(new GridLayout(1, 1));  //Se crea una grilla
+            opt.setLayout(new FlowLayout());                //Se sentre contenido
+            opt.add(s);                                     //Se agrega el primer RadioButton
+            opt.add(n);                                     //Se agrega el segundo RadioButton
+            this.add(opt);                                  //Se agregan el panel al panel principal
+        }
         // ButtonModel select = bgrupo.getSelection();
     }
 
     public static String getSelectedButtonText(ButtonGroup buttonGroup) {
         for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
-
             if (button.isSelected()) {
                 return button.getText();
             }
@@ -149,7 +104,7 @@ public class InterfaceSWIP extends JPanel {
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         for (String preguntasArray1 : preguntasArray) {
-            InterfaceSWIP p = new InterfaceSWIP(preguntasArray1);
+            InterfaceSWIP p = new InterfaceSWIP(preguntasArray1, true);
             panelPreg.add(p, p.toString());
         }
 
@@ -174,7 +129,6 @@ public class InterfaceSWIP extends JPanel {
                 System.out.println(index + ">>" + keys[index]);
                 if (index < preguntasArray.length - 1) {
                     if (getSelectedButtonText(bgrupo).equals("SI")) {
-                        Consultas c = new Consultas();
 
                         String query = String.format("problema_de(%s, Y)", keys[index]);
                         c.Query(query).stream().forEach((x) -> {
@@ -189,8 +143,11 @@ public class InterfaceSWIP extends JPanel {
                 } else {
                     comparar(agregados);
                     String resp = "Su problema puede ser " + Problem[buscarMayor(contador)];
-                    System.out.println(resp);
-                    JOptionPane.showMessageDialog(null, resp, "Respuesta", JOptionPane.INFORMATION_MESSAGE);
+                    InterfaceSWIP p = new InterfaceSWIP(resp, false);
+                    panelPreg.add(p, p.toString());
+                    cl.next(panelPreg);
+                    //System.out.println(resp);
+                    //JOptionPane.showMessageDialog(null, resp, "Respuesta", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         }));
