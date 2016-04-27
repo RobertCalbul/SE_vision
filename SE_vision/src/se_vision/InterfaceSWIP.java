@@ -1,12 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-//Proyecto
+
 package se_vision;
-////
-//Cosas a usar
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -42,16 +35,16 @@ public class InterfaceSWIP extends JPanel {
      */
     private final String name;
     private static int index = 0;
-    private static final Consultas Consulta = new Consultas();
-    private static final Preguntas Preguntas = new Preguntas();
-    private static final List<String> agregados = new ArrayList<>();
-    private static final String Problemas[] = {"miopia", "hipermetropia", "astigmatismo", "presbicia", "estrabismo", "catarata", "glaucoma"};
-    private static final int C_problemas[] = {0, 0, 0, 0, 0, 0, 0};
-    private static final String[] keys = Preguntas.keys();
-    private static final String[] A_preguntas = Preguntas.preguntas();
-    private static final JPanel P_preguntas = new JPanel(new CardLayout());
+    private static final Consultas CONSULTA = new Consultas();
+    private static final Preguntas PREGUNTAS = new Preguntas();
+    private static final List<String> AGREGADOS = new ArrayList<>();
+    private static final String[] PROBLEMAS = {"miopia", "hipermetropia", "astigmatismo", "presbicia", "estrabismo", "catarata", "glaucoma"};
+    private static final int[] C_PROBLEMAS = {0, 0, 0, 0, 0, 0, 0};
+    private static final String[] KEYS = PREGUNTAS.keys();
+    private static final String[] A_PREGUNTAS = PREGUNTAS.preguntas();
+    private static final JPanel P_PREGUNTAS = new JPanel(new CardLayout());
     private final GridLayout grid = new GridLayout(3, 1);
-    private static final ButtonGroup B_group = new ButtonGroup();
+    private static final ButtonGroup B_GROUP = new ButtonGroup();
 
     public InterfaceSWIP(String name, Boolean flag) {
         this.name = name;                               //Setea pregunta a una variable
@@ -70,8 +63,8 @@ public class InterfaceSWIP extends JPanel {
             n.setName(name);
 
             //Agrupacion de Botones radio Buttons
-            B_group.add(s);
-            B_group.add(n);
+            B_GROUP.add(s);
+            B_GROUP.add(n);
 
             //Crea panela contencion ButtonGroup
             JPanel opt = new JPanel(new GridLayout(1, 1));  //Se crea una grilla
@@ -103,20 +96,20 @@ public class InterfaceSWIP extends JPanel {
         JFrame f = new JFrame();
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        for (String preguntasArray1 : A_preguntas) {
+        for (String preguntasArray1 : A_PREGUNTAS) {
             InterfaceSWIP p = new InterfaceSWIP(preguntasArray1, true);
-            P_preguntas.add(p, p.toString());
+            P_PREGUNTAS.add(p, p.toString());
         }
 
         JPanel controles = new JPanel();
         controles.add(new JButton(new AbstractAction("Anterior") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CardLayout cl = (CardLayout) P_preguntas.getLayout();
+                CardLayout cl = (CardLayout) P_PREGUNTAS.getLayout();
                 System.out.println(index);
                 if (index > 0) {
                     index -= 1;
-                    cl.previous(P_preguntas);
+                    cl.previous(P_PREGUNTAS);
                 }
             }
         }));
@@ -124,25 +117,25 @@ public class InterfaceSWIP extends JPanel {
         controles.add(new JButton(new AbstractAction("Siguiente") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CardLayout cl = (CardLayout) P_preguntas.getLayout();
+                CardLayout cl = (CardLayout) P_PREGUNTAS.getLayout();
                 String query = "";
                 try {
-                    if (A_preguntas.length > index) {
+                    if (A_PREGUNTAS.length > index) {
 
-                        if (getSelectedButtonText(B_group).equals("SI")) {
-                            query = String.format("problema_de(%s, Y)", keys[index]);
-                            Consulta.Query(query).stream().forEach((x) -> {
-                                agregados.add(x);
+                        if (getSelectedButtonText(B_GROUP).equals("SI")) {
+                            query = String.format("problema_de(%s, Y)", KEYS[index]);
+                            CONSULTA.Query(query).stream().forEach((x) -> {
+                                AGREGADOS.add(x);
                             });
 
                         }
-                        cl.next(P_preguntas);
-                        System.err.println(String.format("[%d de %d] %s %s:%s ", index, A_preguntas.length - 1, A_preguntas[index], keys[index], query));
+                        cl.next(P_PREGUNTAS);
+                        System.err.println(String.format("[%d de %d] %s %s:%s ", index, A_PREGUNTAS.length - 1, A_PREGUNTAS[index], KEYS[index], query));
                         index += 1;
 
                     } else {
-                        comparar(agregados);
-                        String resp = "Su problema puede ser " + Problemas[buscarMayor(C_problemas)];
+                        comparar(AGREGADOS);
+                        String resp = "Su problema puede ser " + PROBLEMAS[buscarMayor(C_PROBLEMAS)];
                         JOptionPane.showMessageDialog(null, resp, "Alerta", JOptionPane.ERROR_MESSAGE);
                     }
 
@@ -152,7 +145,7 @@ public class InterfaceSWIP extends JPanel {
             }
         }));
 
-        f.add(P_preguntas, BorderLayout.CENTER);
+        f.add(P_PREGUNTAS, BorderLayout.CENTER);
         f.add(controles, BorderLayout.SOUTH);
         f.setTitle("Sistema Experto Vision - Patricio Aros, Robert Calbul, Enrique Ketterer");
         f.pack();
@@ -194,25 +187,25 @@ public class InterfaceSWIP extends JPanel {
             System.out.println(key + " " + Collections.frequency(l, key));
             switch (key) {
                 case "miopia":
-                    C_problemas[0] = Collections.frequency(l, key);
+                    C_PROBLEMAS[0] = Collections.frequency(l, key);
                     break;
                 case "hipermetropia":
-                    C_problemas[1] = Collections.frequency(l, key);
+                    C_PROBLEMAS[1] = Collections.frequency(l, key);
                     break;
                 case "astigmatismo":
-                    C_problemas[2] = Collections.frequency(l, key);
+                    C_PROBLEMAS[2] = Collections.frequency(l, key);
                     break;
                 case "presbicia":
-                    C_problemas[3] = Collections.frequency(l, key);
+                    C_PROBLEMAS[3] = Collections.frequency(l, key);
                     break;
                 case "estrabismo":
-                    C_problemas[4] = Collections.frequency(l, key);
+                    C_PROBLEMAS[4] = Collections.frequency(l, key);
                     break;
                 case "catarata":
-                    C_problemas[5] = Collections.frequency(l, key);
+                    C_PROBLEMAS[5] = Collections.frequency(l, key);
                     break;
                 case "glaucoma":
-                    C_problemas[6] = Collections.frequency(l, key);
+                    C_PROBLEMAS[6] = Collections.frequency(l, key);
                     break;
             }
         }
