@@ -1,4 +1,3 @@
-
 package se_vision;
 
 import java.awt.BorderLayout;
@@ -39,75 +38,21 @@ public class InterfaceSWIP extends JPanel {
     /**
      * @param args the command line arguments
      */
-<<<<<<< HEAD
-    
+
     class ImagePanel extends JComponent {
-    private Image image;
-    public ImagePanel(Image image) {
-        this.image = image;
-    }
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.drawImage(image, 0, 0, this);
-    }
-    }
-;
 
-    
-    
-    static List<String> agregados = new ArrayList<>();
-    static String Problem[] = {"miopia", "hipermetropia", "astigmatismo", "presbicia"};
-    static int contador[] = {0, 0, 0, 0};
+        private Image image;
 
-    static String[] keys = {
-        "cansansio_trabajo",
-        "dolor_cabeza",
-        "dolor_ocular",
-        "d_letra_chica",
-        "d_objeto_cerca",
-        "d_objeto_lejo",
-        "d_conducir_noche",
-        "entrecerrar_ojos",
-        "fatiga_visual",
-        "irritacion",
-        "luz_deslumbrante",
-        "mayor_distancia",
-        "ojos_bizcos",
-        "ojos_enrojecidos",
-        "ojos_hinchados",
-        "ojos_cansados",
-        "tension_ojos",
-        "vision_doble",
-        "vision_nublada",
-        "vision_borrosa",
-        "vision_distorcionada",};
+        public ImagePanel(Image image) {
+            this.image = image;
+        }
 
-    static String[] preguntasArray = {
-        "¿Siente cansansio ocular?",
-        "¿Siente dolor de cabeza al leer?",
-        "¿Siente dolor ocular?",
-        "¿Le dificulta ver las letras chicas?",
-        "¿Le dificulta ver objetos cercanos?",
-        "¿Le dificulta ver objetos lejanos?",
-        "¿Le dificulta conducir de noche?",
-        "¿Entrecierra los ojos al leer?",
-        "¿Tiene fatíga visual?",
-        "¿Presenta irritación ocular?",
-        "¿La luz la considera deslumbrante?",
-        "¿Tiene que alejar los objetos para verlo?",
-        "¿Tiene ojos bizcos?",
-        "¿Tiene los ojos enrojecidos?",
-        "¿Tiene los ojos hinchados?",
-        "¿Tiene ojos cansados?",
-        "¿Presenta tensión en los ojos?",
-        "¿Presenta visión doble?",
-        "¿Presenta visión nublada?",
-        "¿Presenta visión borrosa?",
-        "¿Presenta visión distorcionada?"};
-    //private static final Random random = new Random();
-    private static final JPanel panelPreg = new JPanel(new CardLayout());
-=======
->>>>>>> origin/master
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.drawImage(image, 0, 0, this);
+        }
+    };
+
     private final String name;
     private static int index = 0;
     private static final Consultas CONSULTA = new Consultas();
@@ -129,31 +74,12 @@ public class InterfaceSWIP extends JPanel {
         //this.setBackground(new Color(new Random().nextInt()));
         JLabel pregunta = new JLabel(name);             //Agrega pregunta a un label
         pregunta.setHorizontalAlignment(JLabel.CENTER); //Se centra la label
-<<<<<<< HEAD
 
-        ImageIcon icon = new ImageIcon("back.jpg"); 
+        ImageIcon icon = new ImageIcon("back.jpg");
         JLabel thumb = new JLabel();
         thumb.setIcon(icon);
         this.add(thumb);
-        
-        //RadioButtons
-        JRadioButton s = new JRadioButton("SI");
-        s.setName(name);
-        JRadioButton n = new JRadioButton("NO");
-        n.setName(name);
 
-        //Agrupacion de Botones radio Buttons
-        bgrupo.add(s);
-        bgrupo.add(n);
-
-        //Crea panela contencion ButtonGroup
-        JPanel opt = new JPanel(new GridLayout(1, 1));  //Se crea una grilla
-        opt.setLayout(new FlowLayout());                //Se sentre contenido
-        opt.add(s);                                     //Se agrega el primer RadioButton
-        opt.add(n);                                     //Se agrega el segundo RadioButton
-
-=======
->>>>>>> origin/master
         this.add(pregunta);                             //Se agrega label a panel principal
         if (flag) {
             //RadioButtons
@@ -248,7 +174,7 @@ public class InterfaceSWIP extends JPanel {
         f.add(P_PREGUNTAS, BorderLayout.CENTER);
         f.add(controles, BorderLayout.SOUTH);
         f.setTitle("Sistema Experto Vision - Patricio Aros, Robert Calbul, Enrique Ketterer");
-       
+
         f.pack();
         f.setLocationRelativeTo(null);
         f.setVisible(true);
