@@ -13,18 +13,24 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -40,6 +46,21 @@ public class InterfaceSWIP extends JPanel {
     /**
      * @param args the command line arguments
      */
+    
+    class ImagePanel extends JComponent {
+    private Image image;
+    public ImagePanel(Image image) {
+        this.image = image;
+    }
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(image, 0, 0, this);
+    }
+    }
+;
+
+    
+    
     static List<String> agregados = new ArrayList<>();
     static String Problem[] = {"miopia", "hipermetropia", "astigmatismo", "presbicia"};
     static int contador[] = {0, 0, 0, 0};
@@ -105,6 +126,11 @@ public class InterfaceSWIP extends JPanel {
         JLabel pregunta = new JLabel(name);             //Agrega pregunta a un label
         pregunta.setHorizontalAlignment(JLabel.CENTER); //Se centra la label
 
+        ImageIcon icon = new ImageIcon("back.jpg"); 
+        JLabel thumb = new JLabel();
+        thumb.setIcon(icon);
+        this.add(thumb);
+        
         //RadioButtons
         JRadioButton s = new JRadioButton("SI");
         s.setName(name);
@@ -198,6 +224,7 @@ public class InterfaceSWIP extends JPanel {
         f.add(panelPreg, BorderLayout.CENTER);
         f.add(controles, BorderLayout.SOUTH);
         f.setTitle("Sistema Experto Vision - Patricio Aros, Robert Calbul, Enrique Ketterer");
+       
         f.pack();
         f.setLocationRelativeTo(null);
         f.setVisible(true);
