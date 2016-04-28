@@ -58,7 +58,7 @@ public class InterfaceSWIP extends JPanel {
         this.name = name;                               //Setea pregunta a una variable
 
         this.setLayout(grid);                           //Setea una grilla al panel principal       
-        this.setPreferredSize(new Dimension(640, 240)); //Setea dimensiones de la pantalla
+        this.setPreferredSize(new Dimension(640, 150)); //Setea dimensiones de la pantalla
         //this.setBackground(new Color(new Random().nextInt()));
         JLabel pregunta = new JLabel(name);             //Agrega pregunta a un label
         pregunta.setHorizontalAlignment(JLabel.CENTER); //Se centra la label
