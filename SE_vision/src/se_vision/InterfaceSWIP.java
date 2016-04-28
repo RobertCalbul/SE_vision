@@ -1,12 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-//Proyecto
+
 package se_vision;
-////
-//Cosas a usar
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -46,6 +39,7 @@ public class InterfaceSWIP extends JPanel {
     /**
      * @param args the command line arguments
      */
+<<<<<<< HEAD
     
     class ImagePanel extends JComponent {
     private Image image;
@@ -112,12 +106,22 @@ public class InterfaceSWIP extends JPanel {
         "¿Presenta visión distorcionada?"};
     //private static final Random random = new Random();
     private static final JPanel panelPreg = new JPanel(new CardLayout());
+=======
+>>>>>>> origin/master
     private final String name;
-    static int index = 0;
-    GridLayout grid = new GridLayout(3, 1);
-    static ButtonGroup bgrupo = new ButtonGroup();
+    private static int index = 0;
+    private static final Consultas CONSULTA = new Consultas();
+    private static final Preguntas PREGUNTAS = new Preguntas();
+    private static final List<String> AGREGADOS = new ArrayList<>();
+    private static final String[] PROBLEMAS = {"miopia", "hipermetropia", "astigmatismo", "presbicia", "estrabismo", "catarata", "glaucoma"};
+    private static final int[] C_PROBLEMAS = {0, 0, 0, 0, 0, 0, 0};
+    private static final String[] KEYS = PREGUNTAS.keys();
+    private static final String[] A_PREGUNTAS = PREGUNTAS.preguntas();
+    private static final JPanel P_PREGUNTAS = new JPanel(new CardLayout());
+    private final GridLayout grid = new GridLayout(3, 1);
+    private static final ButtonGroup B_GROUP = new ButtonGroup();
 
-    public InterfaceSWIP(String name) {
+    public InterfaceSWIP(String name, Boolean flag) {
         this.name = name;                               //Setea pregunta a una variable
 
         this.setLayout(grid);                           //Setea una grilla al panel principal       
@@ -125,6 +129,7 @@ public class InterfaceSWIP extends JPanel {
         //this.setBackground(new Color(new Random().nextInt()));
         JLabel pregunta = new JLabel(name);             //Agrega pregunta a un label
         pregunta.setHorizontalAlignment(JLabel.CENTER); //Se centra la label
+<<<<<<< HEAD
 
         ImageIcon icon = new ImageIcon("back.jpg"); 
         JLabel thumb = new JLabel();
@@ -147,16 +152,33 @@ public class InterfaceSWIP extends JPanel {
         opt.add(s);                                     //Se agrega el primer RadioButton
         opt.add(n);                                     //Se agrega el segundo RadioButton
 
+=======
+>>>>>>> origin/master
         this.add(pregunta);                             //Se agrega label a panel principal
-        this.add(opt);                                  //Se agregan el panel al panel principal
+        if (flag) {
+            //RadioButtons
+            JRadioButton s = new JRadioButton("SI");
+            s.setName(name);
+            JRadioButton n = new JRadioButton("NO");
+            n.setName(name);
 
+            //Agrupacion de Botones radio Buttons
+            B_GROUP.add(s);
+            B_GROUP.add(n);
+
+            //Crea panela contencion ButtonGroup
+            JPanel opt = new JPanel(new GridLayout(1, 1));  //Se crea una grilla
+            opt.setLayout(new FlowLayout());                //Se sentre contenido
+            opt.add(s);                                     //Se agrega el primer RadioButton
+            opt.add(n);                                     //Se agrega el segundo RadioButton
+            this.add(opt);                                  //Se agregan el panel al panel principal
+        }
         // ButtonModel select = bgrupo.getSelection();
     }
 
     public static String getSelectedButtonText(ButtonGroup buttonGroup) {
         for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
-
             if (button.isSelected()) {
                 return button.getText();
             }
@@ -174,20 +196,20 @@ public class InterfaceSWIP extends JPanel {
         JFrame f = new JFrame();
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        for (String preguntasArray1 : preguntasArray) {
-            InterfaceSWIP p = new InterfaceSWIP(preguntasArray1);
-            panelPreg.add(p, p.toString());
+        for (String preguntasArray1 : A_PREGUNTAS) {
+            InterfaceSWIP p = new InterfaceSWIP(preguntasArray1, true);
+            P_PREGUNTAS.add(p, p.toString());
         }
 
         JPanel controles = new JPanel();
         controles.add(new JButton(new AbstractAction("Anterior") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CardLayout cl = (CardLayout) panelPreg.getLayout();
+                CardLayout cl = (CardLayout) P_PREGUNTAS.getLayout();
                 System.out.println(index);
                 if (index > 0) {
                     index -= 1;
-                    cl.previous(panelPreg);
+                    cl.previous(P_PREGUNTAS);
                 }
             }
         }));
@@ -195,33 +217,35 @@ public class InterfaceSWIP extends JPanel {
         controles.add(new JButton(new AbstractAction("Siguiente") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CardLayout cl = (CardLayout) panelPreg.getLayout();
-                System.out.println(getSelectedButtonText(bgrupo));
-                System.out.println(index + ">>" + keys[index]);
-                if (index < preguntasArray.length - 1) {
-                    if (getSelectedButtonText(bgrupo).equals("SI")) {
-                        Consultas c = new Consultas();
+                CardLayout cl = (CardLayout) P_PREGUNTAS.getLayout();
+                String query = "";
+                try {
+                    if (A_PREGUNTAS.length > index) {
 
-                        String query = String.format("problema_de(%s, Y)", keys[index]);
-                        c.Query(query).stream().forEach((x) -> {
-                            agregados.add(x);
-                            // System.out.println(x);
-                        });
-                        System.err.println(query + ">>" + index + ">>" + preguntasArray.length);
+                        if (getSelectedButtonText(B_GROUP).equals("SI")) {
+                            query = String.format("problema_de(%s, Y)", KEYS[index]);
+                            CONSULTA.Query(query).stream().forEach((x) -> {
+                                AGREGADOS.add(x);
+                            });
 
+                        }
+                        cl.next(P_PREGUNTAS);
+                        System.err.println(String.format("[%d de %d] %s %s:%s ", index, A_PREGUNTAS.length - 1, A_PREGUNTAS[index], KEYS[index], query));
+                        index += 1;
+
+                    } else {
+                        comparar(AGREGADOS);
+                        String resp = "Su problema puede ser " + PROBLEMAS[buscarMayor(C_PROBLEMAS)];
+                        JOptionPane.showMessageDialog(null, resp, "Alerta", JOptionPane.ERROR_MESSAGE);
                     }
-                    index += 1;
-                    cl.next(panelPreg);
-                } else {
-                    comparar(agregados);
-                    String resp = "Su problema puede ser " + Problem[buscarMayor(contador)];
-                    System.out.println(resp);
-                    JOptionPane.showMessageDialog(null, resp, "Respuesta", JOptionPane.INFORMATION_MESSAGE);
+
+                } catch (NullPointerException ex) {
+                    JOptionPane.showMessageDialog(null, "Debe seleccionar una opción", "Alerta", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }));
 
-        f.add(panelPreg, BorderLayout.CENTER);
+        f.add(P_PREGUNTAS, BorderLayout.CENTER);
         f.add(controles, BorderLayout.SOUTH);
         f.setTitle("Sistema Experto Vision - Patricio Aros, Robert Calbul, Enrique Ketterer");
        
@@ -264,16 +288,25 @@ public class InterfaceSWIP extends JPanel {
             System.out.println(key + " " + Collections.frequency(l, key));
             switch (key) {
                 case "miopia":
-                    contador[0] = Collections.frequency(l, key);
+                    C_PROBLEMAS[0] = Collections.frequency(l, key);
                     break;
                 case "hipermetropia":
-                    contador[1] = Collections.frequency(l, key);
+                    C_PROBLEMAS[1] = Collections.frequency(l, key);
                     break;
                 case "astigmatismo":
-                    contador[2] = Collections.frequency(l, key);
+                    C_PROBLEMAS[2] = Collections.frequency(l, key);
                     break;
                 case "presbicia":
-                    contador[3] = Collections.frequency(l, key);
+                    C_PROBLEMAS[3] = Collections.frequency(l, key);
+                    break;
+                case "estrabismo":
+                    C_PROBLEMAS[4] = Collections.frequency(l, key);
+                    break;
+                case "catarata":
+                    C_PROBLEMAS[5] = Collections.frequency(l, key);
+                    break;
+                case "glaucoma":
+                    C_PROBLEMAS[6] = Collections.frequency(l, key);
                     break;
             }
         }
