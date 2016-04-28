@@ -38,21 +38,6 @@ public class InterfaceSWIP extends JPanel {
     /**
      * @param args the command line arguments
      */
-
-    class ImagePanel extends JComponent {
-
-        private Image image;
-
-        public ImagePanel(Image image) {
-            this.image = image;
-        }
-
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            g.drawImage(image, 0, 0, this);
-        }
-    };
-
     private final String name;
     private static int index = 0;
     private static final Consultas CONSULTA = new Consultas();
@@ -65,6 +50,35 @@ public class InterfaceSWIP extends JPanel {
     private static final JPanel P_PREGUNTAS = new JPanel(new CardLayout());
     private final GridLayout grid = new GridLayout(3, 1);
     private static final ButtonGroup B_GROUP = new ButtonGroup();
+    private Image imagen;
+
+// Atributo que guardara la imagen de Background que le pasemos.
+    private Image background;
+
+    // Metodo que es llamado automaticamente por la maquina virtual Java cada vez que repinta
+    public void paintComponent(Graphics g) {
+
+        /* Obtenemos el tamaño del panel para hacer que se ajuste a este
+		cada vez que redimensionemos la ventana y se lo pasamos al drawImage */
+        int width = this.getSize().width;
+        int height = this.getSize().height;
+
+        // Mandamos que pinte la imagen en el panel
+        if (this.background != null) {
+            g.drawImage(this.background, 0, 0, width, height, null);
+        }
+
+        super.paintComponent(g);
+    }
+
+    // Metodo donde le pasaremos la dirección de la imagen a cargar.
+    public void setBackground(String imagePath) {
+
+        // Construimos la imagen y se la asignamos al atributo background.
+        this.setOpaque(false);
+        this.background = new ImageIcon(imagePath).getImage();
+        repaint();
+    }
 
     public InterfaceSWIP(String name, Boolean flag) {
         this.name = name;                               //Setea pregunta a una variable
@@ -75,11 +89,7 @@ public class InterfaceSWIP extends JPanel {
         JLabel pregunta = new JLabel(name);             //Agrega pregunta a un label
         pregunta.setHorizontalAlignment(JLabel.CENTER); //Se centra la label
 
-        ImageIcon icon = new ImageIcon("back.jpg");
-        JLabel thumb = new JLabel();
-        thumb.setIcon(icon);
-        this.add(thumb);
-
+        setBackground("back.png");
         this.add(pregunta);                             //Se agrega label a panel principal
         if (flag) {
             //RadioButtons
