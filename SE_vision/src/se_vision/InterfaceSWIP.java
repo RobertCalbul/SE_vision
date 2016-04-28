@@ -52,33 +52,7 @@ public class InterfaceSWIP extends JPanel {
     private static final ButtonGroup B_GROUP = new ButtonGroup();
     private Image imagen;
 
-// Atributo que guardara la imagen de Background que le pasemos.
-    private Image background;
 
-    // Metodo que es llamado automaticamente por la maquina virtual Java cada vez que repinta
-    public void paintComponent(Graphics g) {
-
-        /* Obtenemos el tamaño del panel para hacer que se ajuste a este
-		cada vez que redimensionemos la ventana y se lo pasamos al drawImage */
-        int width = this.getSize().width;
-        int height = this.getSize().height;
-
-        // Mandamos que pinte la imagen en el panel
-        if (this.background != null) {
-            g.drawImage(this.background, 0, 0, width, height, null);
-        }
-
-        super.paintComponent(g);
-    }
-
-    // Metodo donde le pasaremos la dirección de la imagen a cargar.
-    public void setBackground(String imagePath) {
-
-        // Construimos la imagen y se la asignamos al atributo background.
-        this.setOpaque(false);
-        this.background = new ImageIcon(imagePath).getImage();
-        repaint();
-    }
 
     public InterfaceSWIP(String name, Boolean flag) {
         this.name = name;                               //Setea pregunta a una variable
@@ -89,21 +63,24 @@ public class InterfaceSWIP extends JPanel {
         JLabel pregunta = new JLabel(name);             //Agrega pregunta a un label
         pregunta.setHorizontalAlignment(JLabel.CENTER); //Se centra la label
 
-        setBackground("back.png");
+        //setBackground("back.png");
         this.add(pregunta);                             //Se agrega label a panel principal
+       this.setOpaque(false);
         if (flag) {
             //RadioButtons
             JRadioButton s = new JRadioButton("SI");
             s.setName(name);
+            s.setOpaque(false);
             JRadioButton n = new JRadioButton("NO");
             n.setName(name);
-
+            n.setOpaque(false);
             //Agrupacion de Botones radio Buttons
             B_GROUP.add(s);
             B_GROUP.add(n);
 
             //Crea panela contencion ButtonGroup
             JPanel opt = new JPanel(new GridLayout(1, 1));  //Se crea una grilla
+            opt.setOpaque(false);
             opt.setLayout(new FlowLayout());                //Se sentre contenido
             opt.add(s);                                     //Se agrega el primer RadioButton
             opt.add(n);                                     //Se agrega el segundo RadioButton
@@ -131,13 +108,19 @@ public class InterfaceSWIP extends JPanel {
         //Obtenemos preguntas
         JFrame f = new JFrame();
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        
+        Panel2 principal = new Panel2();
+        principal.setBackground("back.png");
+        GridLayout gprin = new GridLayout(2,1);
+        P_PREGUNTAS.setOpaque(false);
+        principal.setLayout(gprin);
         for (String preguntasArray1 : A_PREGUNTAS) {
             InterfaceSWIP p = new InterfaceSWIP(preguntasArray1, true);
             P_PREGUNTAS.add(p, p.toString());
         }
 
         JPanel controles = new JPanel();
+        controles.setOpaque(false);
         controles.add(new JButton(new AbstractAction("Anterior") {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -180,9 +163,11 @@ public class InterfaceSWIP extends JPanel {
                 }
             }
         }));
-
-        f.add(P_PREGUNTAS, BorderLayout.CENTER);
-        f.add(controles, BorderLayout.SOUTH);
+        principal.add(P_PREGUNTAS, BorderLayout.CENTER);
+        principal.add(controles, BorderLayout.SOUTH);
+        //f.add(P_PREGUNTAS, BorderLayout.CENTER);
+        //f.add(controles, BorderLayout.SOUTH);
+        f.add(principal);
         f.setTitle("Sistema Experto Vision - Patricio Aros, Robert Calbul, Enrique Ketterer");
 
         f.pack();
