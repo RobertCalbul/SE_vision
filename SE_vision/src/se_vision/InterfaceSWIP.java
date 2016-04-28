@@ -107,13 +107,16 @@ public class InterfaceSWIP extends JPanel {
     public static void creaSlide() {
         //Obtenemos preguntas
         JFrame f = new JFrame();
+        
+        f.setResizable(false);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         Panel2 principal = new Panel2();
         principal.setBackground("back.png");
-        GridLayout gprin = new GridLayout(2,1);
-        P_PREGUNTAS.setOpaque(false);
+        GridLayout gprin = new GridLayout(2,1);        
+        P_PREGUNTAS.setOpaque(false);        
         principal.setLayout(gprin);
+        
         for (String preguntasArray1 : A_PREGUNTAS) {
             InterfaceSWIP p = new InterfaceSWIP(preguntasArray1, true);
             P_PREGUNTAS.add(p, p.toString());
@@ -157,7 +160,7 @@ public class InterfaceSWIP extends JPanel {
                         String resp = "Su problema puede ser " + PROBLEMAS[buscarMayor(C_PROBLEMAS)];
                         JOptionPane.showMessageDialog(null, resp, "Alerta", JOptionPane.ERROR_MESSAGE);
                     }
-
+                    B_GROUP.clearSelection();
                 } catch (NullPointerException ex) {
                     JOptionPane.showMessageDialog(null, "Debe seleccionar una opción", "Alerta", JOptionPane.ERROR_MESSAGE);
                 }
