@@ -5,24 +5,19 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
-import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -31,7 +26,7 @@ import javax.swing.JRadioButton;
 
 /**
  *
- * @author Nexus
+ * @author Robert Calbul, Patricio Aros, Enrique Ketterer
  */
 public class InterfaceSWIP extends JPanel {
 
@@ -44,6 +39,7 @@ public class InterfaceSWIP extends JPanel {
     private static final Preguntas PREGUNTAS = new Preguntas();
     private static final List<String> AGREGADOS = new ArrayList<>();
     private static final String[] PROBLEMAS = {"miopia", "hipermetropia", "astigmatismo", "presbicia", "estrabismo", "catarata", "glaucoma"};
+    private static final int[] C_TOTAL = {0, 0, 0, 0, 0, 0, 0};
     private static final int[] C_PROBLEMAS = {0, 0, 0, 0, 0, 0, 0};
     private static final String[] KEYS = PREGUNTAS.keys();
     private static final String[] A_PREGUNTAS = PREGUNTAS.preguntas();
@@ -51,8 +47,6 @@ public class InterfaceSWIP extends JPanel {
     private final GridLayout grid = new GridLayout(3, 1);
     private static final ButtonGroup B_GROUP = new ButtonGroup();
     private Image imagen;
-
-
 
     public InterfaceSWIP(String name, Boolean flag) {
         this.name = name;                               //Setea pregunta a una variable
@@ -65,7 +59,7 @@ public class InterfaceSWIP extends JPanel {
 
         //setBackground("back.png");
         this.add(pregunta);                             //Se agrega label a panel principal
-       this.setOpaque(false);
+        this.setOpaque(false);
         if (flag) {
             //RadioButtons
             JRadioButton s = new JRadioButton("SI");
@@ -107,16 +101,16 @@ public class InterfaceSWIP extends JPanel {
     public static void creaSlide() {
         //Obtenemos preguntas
         JFrame f = new JFrame();
-        
+
         f.setResizable(false);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+
         Panel2 principal = new Panel2();
         principal.setBackground("back.png");
-        GridLayout gprin = new GridLayout(2,1);        
-        P_PREGUNTAS.setOpaque(false);        
+        GridLayout gprin = new GridLayout(2, 1);
+        P_PREGUNTAS.setOpaque(false);
         principal.setLayout(gprin);
-        
+
         for (String preguntasArray1 : A_PREGUNTAS) {
             InterfaceSWIP p = new InterfaceSWIP(preguntasArray1, true);
             P_PREGUNTAS.add(p, p.toString());
@@ -152,13 +146,21 @@ public class InterfaceSWIP extends JPanel {
 
                         }
                         cl.next(P_PREGUNTAS);
-                        System.err.println(String.format("[%d de %d] %s %s:%s ", index, A_PREGUNTAS.length - 1, A_PREGUNTAS[index], KEYS[index], query));
+                        comparar(AGREGADOS);
+                        //HEURISTICA, determina la enfermedad con mayor puntuacion con
+                        //respecto a su total de sintomas asociados
+                        for (int i = 0; i < C_TOTAL.length; i++) {
+                            int tresSim = ((C_PROBLEMAS[i] * 100) / C_TOTAL[i]);
+                            //System.err.println(">>"+tresSim);
+                            if (tresSim >= 80) {
+                                EntregaResp();
+                            }
+                        }
+                        //System.err.println(String.format("[%d de %d] %s %s:%s ", index, A_PREGUNTAS.length - 1, A_PREGUNTAS[index], KEYS[index], query));
                         index += 1;
 
                     } else {
-                        comparar(AGREGADOS);
-                        String resp = "Su problema puede ser " + PROBLEMAS[buscarMayor(C_PROBLEMAS)];
-                        JOptionPane.showMessageDialog(null, resp, "Alerta", JOptionPane.ERROR_MESSAGE);
+                        EntregaResp();
                     }
                     B_GROUP.clearSelection();
                 } catch (NullPointerException ex) {
@@ -179,23 +181,32 @@ public class InterfaceSWIP extends JPanel {
     }
 
     public static void main(String[] args) {
+        comparar2(CONSULTA.EsSintoma()); //obtiene los totales de sintomas por enfermedad
         EventQueue.invokeLater(() -> {
             creaSlide();
         });
     }
 
-    public static int buscarMayor(int[] l) {
+    public static void EntregaResp() {
+        String resp = "Su problema puede ser " + PROBLEMAS[buscarMayor(C_PROBLEMAS)[0]] + (buscarMayor(C_PROBLEMAS)[1] != -1 ? " o " + PROBLEMAS[buscarMayor(C_PROBLEMAS)[1]] : "");
+        JOptionPane.showMessageDialog(null, resp, "Alerta", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public static int[] buscarMayor(int[] l) {
         /**
          * *
          * Verifica cual es la enfermedad que mas se repitio y retorna el index
          * de la enfermedad probable
          */
         int mayor = 0;
-        int index_c = 0;
+        int[] index_c = {-1, -1};
         for (int i = 0; i < l.length; i++) {
-            if (l[i] >= mayor) {
+            if (l[i] > mayor) {
                 mayor = l[i];
-                index_c = i;
+                index_c[0] = i;
+            } else if (l[i] == mayor) {
+                //mayor = l[i];
+                index_c[1] = i;
             }
             //System.out.println(contador[i]);
         }
@@ -209,7 +220,7 @@ public class InterfaceSWIP extends JPanel {
          */
         Set<String> lista = new HashSet<>(l);
         for (String key : lista) {
-            System.out.println(key + " " + Collections.frequency(l, key));
+            //System.out.println(key + " " + Collections.frequency(l, key));
             switch (key) {
                 case "miopia":
                     C_PROBLEMAS[0] = Collections.frequency(l, key);
@@ -231,6 +242,40 @@ public class InterfaceSWIP extends JPanel {
                     break;
                 case "glaucoma":
                     C_PROBLEMAS[6] = Collections.frequency(l, key);
+                    break;
+            }
+        }
+    }
+
+    public static void comparar2(List<String> l) {
+        /**
+         * *
+         * Cuenta la cantidad de veces que se repitio una enfermedad
+         */
+        Set<String> lista = new HashSet<>(l);
+        for (String key : lista) {
+            // System.out.println(key + " " + Collections.frequency(l, key));
+            switch (key) {
+                case "miopia":
+                    C_TOTAL[0] = Collections.frequency(l, key);
+                    break;
+                case "hipermetropia":
+                    C_TOTAL[1] = Collections.frequency(l, key);
+                    break;
+                case "astigmatismo":
+                    C_TOTAL[2] = Collections.frequency(l, key);
+                    break;
+                case "presbicia":
+                    C_TOTAL[3] = Collections.frequency(l, key);
+                    break;
+                case "estrabismo":
+                    C_TOTAL[4] = Collections.frequency(l, key);
+                    break;
+                case "catarata":
+                    C_TOTAL[5] = Collections.frequency(l, key);
+                    break;
+                case "glaucoma":
+                    C_TOTAL[6] = Collections.frequency(l, key);
                     break;
             }
         }

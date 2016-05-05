@@ -1,9 +1,8 @@
-
 package se_vision;
 
 /**
  *
- * @author rock_
+ * @author Robert Calbul, Patricio Aros, Enrique Ketterer
  */
 public class Preguntas {
 

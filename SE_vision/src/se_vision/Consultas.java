@@ -1,18 +1,13 @@
-
 package se_vision;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import org.jpl7.Query;
-import static se_vision.SE_vision.contador;
 
 /**
  *
- * @author rock_
+ * @author Robert Calbul, Patricio Aros, Enrique Ketterer
  */
 public final class Consultas {
 
@@ -39,17 +34,19 @@ public final class Consultas {
         return lista;
     }
 
-    /*public List<String> Query2(String query) {
+    public List<String> EsSintoma() {
 
         List<String> lista = new ArrayList<>();
-        Query q = new Query(query);
+        int[] cantidades = null;
+        Query q = new Query("sintoma_de(X,Y)");
 
         while (q.hasMoreSolutions()) {
             HashMap ht = (HashMap) q.nextSolution();
-            lista.add(ht.get("X")+","+ht.get("Y"));
+            lista.add(ht.get("Y").toString());
         }
         return lista;
-    }*/
+    }
+
     public Boolean init() {
         Boolean bandera = false;
         try {

@@ -14,11 +14,13 @@ import javax.swing.JPanel;
  *
  * @author rock_
  */
-public class Panel2 extends JPanel{
+public class Panel2 extends JPanel {
+
     // Atributo que guardara la imagen de Background que le pasemos.
     private Image background;
 
     // Metodo que es llamado automaticamente por la maquina virtual Java cada vez que repinta
+    @Override
     public void paintComponent(Graphics g) {
 
         /* Obtenemos el tamaño del panel para hacer que se ajuste a este

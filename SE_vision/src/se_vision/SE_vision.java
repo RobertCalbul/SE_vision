@@ -31,9 +31,8 @@ public class SE_vision {
         comparar(agregados);
         System.out.println("Su problema puede ser " + Problem[buscarMayor(contador)]);
     }*/
-    
-    public static void agrega_sintomas(){
-    //int contador[] = {0, 0, 0, 0};
+    public static void agrega_sintomas() {
+        //int contador[] = {0, 0, 0, 0};
         Consultas c = new Consultas();
 
         c.Query("problema_de(vision_borrosa, Y)").stream().forEach((x) -> {
@@ -67,9 +66,10 @@ public class SE_vision {
     }
 
     public static int buscarMayor(int[] l) {
-        /***
-         * Verifica cual es la enfermedad que mas se repitio
-         * y retorna el index de la enfermedad probable
+        /**
+         * *
+         * Verifica cual es la enfermedad que mas se repitio y retorna el index
+         * de la enfermedad probable
          */
         int mayor = 0;
         int index = 0;
@@ -83,8 +83,9 @@ public class SE_vision {
         return index;
     }
 
-    public static void comparar(List<String>l) {
-        /***
+    public static void comparar(List<String> l) {
+        /**
+         * *
          * Cuenta la cantidad de veces que se repitio una enfermedad
          */
         Set<String> lista = new HashSet<>(l);
